@@ -1,8 +1,10 @@
 # hello-world2
 second try
 
-## hello
+## header 2
 
-### hello
+### header 3
 
 **bold**
+
+***bold italics***
