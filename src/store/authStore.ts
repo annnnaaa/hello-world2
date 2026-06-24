@@ -1,21 +1,17 @@
 import { create } from 'zustand';
 import type { Session, User } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabase';
 
 interface AuthState {
   session: Session | null;
   user: User | null;
   loading: boolean;
-}
-
-interface AuthActions {
   setSession: (session: Session | null) => void;
-  setUser: (user: User | null) => void;
-  setLoading: (loading: boolean) => void;
+  initialize: () => () => void;
+  signOut: () => Promise<void>;
 }
 
-export type AuthStore = AuthState & AuthActions;
-
-export const useAuthStore = create<AuthStore>()((set) => ({
+export const useAuthStore = create<AuthState>()((set) => ({
   session: null,
   user: null,
   loading: true,
@@ -24,7 +20,25 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     set({
       session,
       user: session?.user ?? null,
+      loading: false,
     }),
-  setUser: (user) => set({ user }),
-  setLoading: (loading) => set({ loading }),
+
+  initialize: () => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      set({ session, user: session?.user ?? null, loading: false });
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      set({ session, user: session?.user ?? null, loading: false });
+    });
+
+    return () => subscription.unsubscribe();
+  },
+
+  signOut: async () => {
+    await supabase.auth.signOut();
+    set({ session: null, user: null });
+  },
 }));

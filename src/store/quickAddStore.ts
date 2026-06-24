@@ -1,31 +1,21 @@
 import { create } from 'zustand';
 
-export type QuickAddType = 'braindump' | 'task' | 'event' | 'note' | 'idea';
+export type QuickAddType =
+  | 'braindump'
+  | 'task'
+  | 'event'
+  | 'note'
+  | 'idea'
+  | null;
 
 interface QuickAddState {
-  quickAddType: QuickAddType | null;
-  prefillContent: string;
+  quickAddType: QuickAddType;
+  setQuickAddType: (type: QuickAddType) => void;
+  close: () => void;
 }
 
-interface QuickAddActions {
-  openQuickAdd: (type: QuickAddType, content?: string) => void;
-  closeQuickAdd: () => void;
-}
-
-export type QuickAddStore = QuickAddState & QuickAddActions;
-
-export const useQuickAddStore = create<QuickAddStore>()((set) => ({
+export const useQuickAddStore = create<QuickAddState>()((set) => ({
   quickAddType: null,
-  prefillContent: '',
-
-  openQuickAdd: (type, content = '') =>
-    set({
-      quickAddType: type,
-      prefillContent: content,
-    }),
-  closeQuickAdd: () =>
-    set({
-      quickAddType: null,
-      prefillContent: '',
-    }),
+  setQuickAddType: (quickAddType) => set({ quickAddType }),
+  close: () => set({ quickAddType: null }),
 }));
