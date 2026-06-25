@@ -14,9 +14,9 @@ export function useCalendarEvents(startDate: string, endDate: string) {
         .from('calendar_events')
         .select('*')
         .eq('user_id', user.id)
-        .gte('start_time', startDate)
-        .lte('start_time', endDate)
-        .order('start_time', { ascending: true });
+        .gte('start_at', startDate)
+        .lte('start_at', endDate)
+        .order('start_at', { ascending: true });
       if (error) throw error;
       return data;
     },

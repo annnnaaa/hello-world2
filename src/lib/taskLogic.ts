@@ -67,7 +67,7 @@ export const STATUS_LABELS: Record<DerivedTaskStatus, string> = {
  */
 export const STATUS_COLORS: Record<DerivedTaskStatus, string> = {
   overdue: 'bg-red-500/20 text-red-400 border border-red-500/30',
-  now: 'bg-brand-500/20 text-brand-400 border border-brand-500/30',
+  now: 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30',
   soon: 'bg-amber-500/20 text-amber-400 border border-amber-500/30',
   later: 'bg-slate-500/20 text-slate-400 border border-slate-500/30',
   hold: 'bg-gray-500/20 text-gray-400 border border-gray-500/30',
